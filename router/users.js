@@ -1,41 +1,13 @@
 import express, { Router } from 'express'
-import { v4 as uuidv4 } from 'uuid';
 const router = express.Router();
-
-let users = [
-    
-];
-
-router.get('/', (req,res) => {
-  console.log(users)
-  res.send(users)
-})
-
-router.post('/',(req,res) => {
-
-  const user = req.body;
-  const userWithId = {...user,id:uuidv4()};
-  users.push(userWithId);
-  console.log('Port request reached',
-    users
-  )
-  res.send(users
-  );
-})
+import { getUser,getUserWithId,createUser,updateUser,deleteUser } from '../controllers/userController.js';
 
 
-router.get('/:id', (req,res) => {
-  const {id} = req.params ;
-  const foundUser = users.find((user) => user.id === id)
-  res.send(foundUser)
-})
-
-
-router.delete('/:id',(req,res) => {
-  const {id} = req.params ;
-  users = users.filter((user)=>user.id !== id)
-  res.send('deleted user')
-})
+router.get('/', getUser)
+router.post('/',createUser)
+router.get('/:id',getUserWithId )
+router.delete('/:id',deleteUser)
+router.patch('/:id', updateUser)
 
 
 
