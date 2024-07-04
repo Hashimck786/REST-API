@@ -1,23 +1,9 @@
 import express, { Router } from 'express'
-
+import { v4 as uuidv4 } from 'uuid';
 const router = express.Router();
 
 const users = [
-    {
-      firstname: "John",
-      lastname: "Doe",
-      age: 25
-    },
-    {
-      firstname: "Jane",
-      lastname: "Smith",
-      age: 30
-    },
-    {
-      firstname: "Emily",
-      lastname: "Johnson",
-      age: 22
-    }
+    
 ];
 
 router.get('/', (req,res) => {
@@ -26,8 +12,22 @@ router.get('/', (req,res) => {
 })
 
 router.post('/',(req,res) => {
-  console.log('Port request reached')
-  res.send('Port request reached');
+
+  const user = req.body;
+  const userWithId = {...user,id:uuidv4()};
+  users.push(userWithId);
+  console.log('Port request reached',
+    users
+  )
+  res.send(users
+  );
+})
+
+
+router.get('/:id', (req,res) => {
+  const {id} = req.params ;
+  const foundUser = users.find((user) => user.id === id)
+  res.send(foundUser)
 })
 
 
